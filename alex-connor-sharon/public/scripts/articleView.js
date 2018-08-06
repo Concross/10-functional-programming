@@ -89,7 +89,7 @@ articleView.create = () => {
   var article;
   $('#articles').empty();
 
-  article = new Article({
+  article = new app.Article({
     title: $('#article-title').val(),
     author: $('#article-author').val(),
     author_url: $('#article-author-url').val(),
@@ -104,7 +104,7 @@ articleView.create = () => {
 
 articleView.submit = event => {
   event.preventDefault();
-  let article = new Article({
+  let article = new app.Article({
     title: $('#article-title').val(),
     author: $('#article-author').val(),
     author_url: $('#article-author-url').val(),
@@ -131,9 +131,10 @@ articleView.initIndexPage = () => {
 };
 
 articleView.initAdminPage = () => {
-  
+
+  let template = Handlebars.compile($('#author-stat-template').text());
   // REVIEW: We use .forEach() here because we are relying on the side-effects of the callback function: appending to the DOM. The callback is not required to return anything.
-  app.Article.numWordsByAuthor().forEach(stat => $('.author-stats').append(template(stat)));
+  app.Article.numWordsByAuthor().map(stat => $('.author-stats').append(template(stat)));
 
   // REVIEW: Simply write the correct values to the page:
   $('#blog-stats .articles').text(app.Article.all.length);

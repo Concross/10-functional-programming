@@ -1,7 +1,7 @@
 'use strict';
 var app = app || {};
 
-// TODO: Wrap the contents of this file, except for the preceding 'use strict' and 'var app...' declararions, in an IIFE.
+// DONE: Wrap the contents of this file, except for the preceding 'use strict' and 'var app...' declararions, in an IIFE.
 // Give the IIFE a parameter called 'module'.
 // At the very end of the code, but still inside the IIFE, attach the 'Article' object to 'module'.
 // Where the IIFE is invoked, pass in the global 'app' object that is defined above.
@@ -53,26 +53,33 @@ var app = app || {};
     //   .replace(/\\n/g, " ")
     //   .split(/\s+/g)))
     return Article.all.map(article => article.body
-                                                  .match(/\b\w+/g).length)
-                                                  .reduce((acc, curr) => acc + curr);
+      .match(/\b\w+/g).length)
+      .reduce((acc, curr) => acc + curr);
   };
 
-  // TODO: Chain together a .map() and a .reduce() call to produce an array of unique author names. You will probably need to use the optional accumulator argument in your reduce call.
+  // DONE: Chain together a .map() and a .reduce() call to produce an array of unique author names. You will probably need to use the optional accumulator argument in your reduce call.
   Article.allAuthors = () => {
     return Article.all.map(articles => articles.author).reduce((acc, curr) => {
-      if (!acc.includes(curr)){
+      if (!acc.includes(curr)) {
         acc.push(curr);
       }
       return acc;
-    },[] );
+    }, []);
   };
 
   Article.numWordsByAuthor = () => {
-    // TODO: Transform each author string into an object with properties for the author's name, as well as the total number of words across all articles written by the specified author.
+    // DONE: Transform each author string into an object with properties for the author's name, as well as the total number of words across all articles written by the specified author.
     // HINT: This .map() should be set up to return an object literal with two properties.
     // The first property should be pretty straightforward, but you will need to chain some combination of .filter(), .map(), and .reduce() to get the value for the second property.
 
-    return Article.allAuthors().map(author => { })
+    return Article.allAuthors().map(author => {
+      return {
+        name: author,
+        numWords: Article.all.filter(article => author === article.author)
+          .map(article => article.body.match(/\b\w+/g).length)
+          .reduce((acc, curr) => acc + curr)
+      }
+    })
   };
 
   Article.truncateTable = callback => {
