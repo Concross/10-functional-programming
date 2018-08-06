@@ -29,7 +29,8 @@ var app = app || {};
   Article.loadAll = articleData => {
     articleData.sort((a, b) => (new Date(b.published_on)) - (new Date(a.published_on)))
 
-    // TODO: Refactor this .forEach() code, by using a .map() call instead, since what we are trying to accomplish is the transformation of one collection into another. Remember that we can set variables equal to the result of functions. So if we set a variable equal to the result of a .map(), it will be our transformed array.
+    // DONE: Refactor this .forEach() code, by using a .map() call instead, since what we are trying to accomplish is the transformation of one collection into another. Remember that we can set variables equal to the result of functions. So if we set a variable equal to the result of a .map(), it will be our transformed array.
+    articleData.map(articleObject => Article.all.push(new Article(articleObject)));
 
     /* OLD forEach():
     articleData.forEach(articleObject => Article.all.push(new Article(articleObject)));
@@ -45,13 +46,18 @@ var app = app || {};
       })
   };
 
-  // TODO: Chain together a .map() and a .reduce() call to get a rough count of all words in all articles. Yes, you have to do it this way.
+  // : Chain together a .map() and a .reduce() call to get a rough count of all words in all articles. Yes, you have to do it this way.
 
   Article.numWordsAll = () => {
-    return Article.all.map().reduce()
+    // console.log(Article.all.map(article => article.body
+    //   .replace(/\\n/g, " ")
+    //   .split(/\s+/g)))
+    return Article.all.map(article => article.body
+                                                  .match(/\b\w+/g).length)
+                                                  .reduce((acc, curr) => acc + curr);
   };
 
-  // TODO: Chain together a .map() and a .reduce() call to produce an array of unique author names. You will probably need to use the optional accumulator argument in your reduce call.
+  // : Chain together a .map() and a .reduce() call to produce an array of unique author names. You will probably need to use the optional accumulator argument in your reduce call.
   Article.allAuthors = () => {
     return Article.all.map().reduce();
   };
